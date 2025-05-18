@@ -7,7 +7,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 //screens
 import HomeScreen from '../screens/HomeScreen';
-import EjemploScreen from '../screens/EjemploScreen';
+import RetoMapaScreen from '../screens/RetoMapaScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,12 +33,12 @@ function MyTabs(){
                 }}
             />
             <Tab.Screen 
-                name='Ejemplo' 
-                component={EjemploScreen}
+                name='RetoMapa' 
+                component={RetoMapaScreen}
                 options={{
-                    tabBarLabel: 'Ejemplo',
+                    tabBarLabel: 'RetoMapa',
                     tabBarIcon: ({color, size}) => (
-                        <MaterialCommunityIcons name='image-search' color={color} size={size} />
+                        <MaterialCommunityIcons name='map-legend' color={color} size={size} />
                     ),
                     //tabBarBadge: 10,
                     //headerShown: false, //borrar el heder
