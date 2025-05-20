@@ -66,12 +66,33 @@ export default function ProfileScreen() {
     );
   }
 
+  const handleRefresh = async () => {
+    setLoading(true);
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userRef = doc(db, "Usuarios", currentUser.uid);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
+        } else {
+          setUserData({ email: currentUser.email });
+        }
+      }
+    } catch (error) {
+      console.error("Error al actualizar datos del usuario:", error);
+      Alert.alert("Error", "No se pudieron actualizar los datos del perfil");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.profileImageContainer}>
           <Image
-            source={require('../../assets/default-avatar.png')} // Asegúrate de tener esta imagen en tu proyecto
+            source={require('../../assets/default-avatar.png')}
             style={styles.profileImage}
             defaultSource={require('../../assets/default-avatar.png')}
             onError={() => console.log('Error cargando imagen')}
@@ -83,6 +104,12 @@ export default function ProfileScreen() {
           <Text style={styles.pointsText}>{userData?.tarijapoints || 0} TarijaPoints</Text>
         </View>
       </View>
+
+      <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+        <MaterialCommunityIcons name="refresh" size={22} color="white" />
+        <Text style={styles.refreshText}>Actualizar</Text>
+      </TouchableOpacity>
+
 
       <View style={styles.infoSection}>
         <Text style={styles.sectionTitle}>Información Personal</Text>
@@ -263,4 +290,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 8,
   },
+  refreshButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#F77F00',
+  marginHorizontal: 15,
+  marginTop: 20,
+  paddingVertical: 12,
+  borderRadius: 10,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+  elevation: 3,
+},
+refreshText: {
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: 16,
+  marginLeft: 8,
+},
 });
