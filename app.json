@@ -13,21 +13,56 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "La app necesita acceso a tus fotos para verificar los retos.",
+        "NSCameraUsageDescription": "La app necesita acceso a tu cámara para tomar fotos de los retos.",
+        "NSPhotoLibraryAddUsageDescription": "La app necesita guardar fotos en tu galería."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.CAMERA"
+      ],
+      "package": "com.yourcompany.tarijacity"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "La app necesita acceso a tus fotos para verificar los retos.",
+          "cameraPermission": "La app necesita acceso a tu cámara para tomar fotos de los retos.",
+          "saveToPhotos": true
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Permite acceder a tus fotos para verificar los retos.",
+          "savePhotosPermission": "Permite guardar fotos completadas.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ],
     "permissions": {
       "location": {
         "foreground": true
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-here"
       }
     }
   }

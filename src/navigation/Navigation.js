@@ -1,23 +1,25 @@
-//Navigation.js
+// Navigation.js
 import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from "@react-navigation/native";
-//icons
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
-//screens
+// Screens
 import HomeScreen from '../screens/HomeScreen';
 import RetoMapaScreen from '../screens/RetoMapaScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import RetoFoto from '../screens/RetoFoto';
 
 // Auth
 import { useAuth, AuthProvider } from '../context/AuthContext';
 import AuthNavigation from './AuthNavigation';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-function MyTabs(){
-    return(
+function MyTabs() {
+    return (
         <Tab.Navigator
             initialRouteName='Home'
             screenOptions={{
@@ -30,11 +32,9 @@ function MyTabs(){
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',
-                    tabBarIcon: ({color, size}) => (
+                    tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name='home' color={color} size={size} />
                     ),
-                    //tabBarBadge: 10,
-                    //headerShown: false, //borrar el heder
                 }}
             />
             <Tab.Screen 
@@ -42,11 +42,9 @@ function MyTabs(){
                 component={RetoMapaScreen}
                 options={{
                     tabBarLabel: 'RetoMapa',
-                    tabBarIcon: ({color, size}) => (
+                    tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name='map-legend' color={color} size={size} />
                     ),
-                    //tabBarBadge: 10,
-                    //headerShown: false, //borrar el heder
                 }}
             />
             <Tab.Screen 
@@ -54,30 +52,42 @@ function MyTabs(){
                 component={ProfileScreen}
                 options={{
                     tabBarLabel: 'Mi perfil',
-                    tabBarIcon: ({color, size}) => (
+                    tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name='account' color={color} size={size} />
                     ),
-                    //tabBarBadge: 10,
-                    //headerShown: false, //borrar el heder
                 }}
             />
-            
         </Tab.Navigator>
-    )   
+    );
 }
 
-// Componente principal que decide qué navegación mostrar según el estado de autenticación
+function MainStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="MainTabs" 
+                component={MyTabs} 
+                options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+                name="RetoFoto" 
+                component={RetoFoto} 
+                options={{ title: 'Reto Foto' }} 
+            />
+        </Stack.Navigator>
+    );
+}
+
 function NavigationContent() {
     const { currentUser } = useAuth();
-    
+
     return (
         <NavigationContainer>
-            {currentUser ? <MyTabs /> : <AuthNavigation />}
+            {currentUser ? <MainStack /> : <AuthNavigation />}
         </NavigationContainer>
     );
 }
 
-// Componente que envuelve la navegación con el proveedor de autenticación
 export default function Navigation() {
     return (
         <AuthProvider>
